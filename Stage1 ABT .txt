@@ -79,15 +79,15 @@ WHILE 1=1 BEGIN
 ---- 1.1 Collecting Timeblock Data
 		
 	select 	@TB = timeblock, @BlockRange = BlockStartTime +'-'+ BlockEndTime, @CBTId = CurrentBlockTimestampId, @TimeLeft = SecondElapsed,
-	@MNTId = MidnightTimeStampid from [ems_Network].[dbo].[blocktimedata]
+	@MNTId = MidnightTimeStampid from [EMS_Network].[dbo].[blocktimedata]
 						
 ---- 1.2 Updating Instant Parameters
 			
-	select @iMW = MW, @aMW = AvgMW from [ems_Network].[dbo].[AvgMW]
-	select @ihz  = Hz, @ahz  = AvgHZ from [ems_Network].[dbo].[AvgHZ]
-	select @MVAR1 = KV, @V from [ems_Network].[dbo].[RTKVAR1]
+	select @iMW = MW, @aMW = AvgMW from [EMS_Network].[dbo].[AvgMW]
+	select @ihz  = Hz, @ahz  = AvgHZ from [EMS_Network].[dbo].[AvgHZ]
+	select @MVAR1 = KV, @V from [EMS_Network].[dbo].[RTKVAR1]
 
-	select 	@RRFUIA10  = UIA10F, @RRFUIB10  = UIB10F, @RRFOIA10  = OIA10F, @RRFOIB10  = OIB10F from [ems_Network].[dbo].[DSRFactor] where Hz=@ahz
+	select 	@RRFUIA10  = UIA10F, @RRFUIB10  = UIB10F, @RRFOIA10  = OIA10F, @RRFOIB10  = OIB10F from [EMS_Network].[dbo].[DSRFactor] where Hz=@ahz
 
 ---- 1.3 Collecting DC SG of Current Block
 
@@ -293,7 +293,7 @@ WHILE 1=1 BEGIN
 ---- 2.1 Collecting Previous Block Data
 		
 	select 	@TB = BlockNo, @BlockRange = BlockTime,@aMW = AvgMW,@ahz  = AvgHZ, @DC = DC, @SG = SG, @FC = FC, @AgSGPer =DCP
-	from [ems_Network].[dbo].[Stg1ABTLastBlock]
+	from [EMS_Network].[dbo].[Stg1ABTLastBlock]
 	
         set @DSMW = round(@aMW-@SG,3)
 	set @xBD  = Round(@DC-@SG,3)
@@ -305,7 +305,7 @@ WHILE 1=1 BEGIN
 			@RRFUIB10  = UIB10F,	-- % of RR for Under Injection Below 10% --
 			@RRFOIA10  = OIA10F,	-- % of RR for Over Injection Above 10% --
 			@RRFOIB10  = OIB10F		-- % of RR for Over Injection Below 10% --
-	from [ems_Network].[dbo].[DSRFactor] where Hz=@ahz
+	from [EMS_Network].[dbo].[DSRFactor] where Hz=@ahz
 			
 ---- 2.3 Start of DSM Regulation 2024 Calculations -----
 								
