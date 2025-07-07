@@ -85,7 +85,7 @@ WHILE 1=1 BEGIN
 			
 	select @iMW = MW, @aMW = AvgMW from [EMS_Network].[dbo].[AvgMW]
 	select @ihz  = Hz, @ahz  = AvgHZ from [EMS_Network].[dbo].[AvgHZ]
-	select @MVAR1 = KV, @V from [EMS_Network].[dbo].[RTKVAR1]
+	--select @MVAR1 = KV, @V from [EMS_Network].[dbo].[RTKVAR1]
 
 	select 	@RRFUIA10  = UIA10F, @RRFUIB10  = UIB10F, @RRFOIA10  = OIA10F, @RRFOIB10  = OIB10F from [EMS_Network].[dbo].[DSRFactor] where Hz=@ahz
 
@@ -274,8 +274,10 @@ WHILE 1=1 BEGIN
         @aMW=sum(KVAR) from [EMS_Network].[dbo].[l4RealTime] where  meterid in (1,2,3,4,5,6)
 	update [EMS_Network].[dbo].[WebData] set [P37] = @iMW,[P38] = @ihz, [P39] = @aMW WHERE ID= 6
 
-        Select @MVAR1=AvgKVAR,@MVARH=KVARh_H,@MVARL=KVARh_L from [EMS_Network].[dbo].[CBKVARVolt1]
-        set @MVARTH=@MVARH*1.05,@MVARTL=@MVARL*1.05,@MVART1=(@MVARH+@MVARL)*1.05
+        --Select @MVAR1=AvgKVAR,@MVARH=KVARh_H,@MVARL=KVARh_L from [EMS_Network].[dbo].[CBKVARVolt1]
+        set @MVARTH=@MVARH*1.05
+set @MVARTL=@MVARL*1.05
+set @MVART1=(@MVARH+@MVARL)*1.05
  	update [EMS_Network].[dbo].[WebData] set [P17] = @MVAR1,[P18] = @MVARL, [P19] = @MVARTL,[P20] = @MVARH,[P21] = @MVARTH, [P22] = @MVART1 WHERE ID= 2
 
 
@@ -405,11 +407,13 @@ WHILE 1=1 BEGIN
 
 
 	update [EMS_Network].[dbo].[WebData]
-	set	[1] = @TB, [2] = @BlockRange, [3] = @DC, [4] = @SG, [5] = @xBD, [6] = @AgSGPer ,[7] = @ahz, [8] = @aMW, [9] = @DSMW, [10]= round(@DSRate,2),
-		[11]= round(@DSRs,0), [12]= @AddDS, [13]= @DSGr,[14]= @DSFC,[15]= @DSNt WHERE ID= 1
+	set	[P1] = @TB, [P2] = @BlockRange, [P3] = @DC, [P4] = @SG, [P5] = @xBD, [P6] = @AgSGPer ,[P7] = @ahz, [P8] = @aMW, [P9] = @DSMW, [P10]= round(@DSRate,2),
+		[P11]= round(@DSRs,0), [P12]= @AddDS, [P13]= @DSGr,[P14]= @DSFC,[P15]= @DSNt WHERE ID= 1
 
         Select @MVAR1=AvgKVAR,@MVARH=KVARh_H,@MVARL=KVARh_L from [EMS_Network].[dbo].[LBKVARVolt1]
-        set @MVARTH=@MVARH*1.05,@MVARTL=@MVARL*1.05,@MVART1=(@MVARH+@MVARL)*1.05
+        set @MVARTH=@MVARH*1.05
+set @MVARTL=@MVARL*1.05
+set @MVART1=(@MVARH+@MVARL)*1.05
  	update [EMS_Network].[dbo].[WebData] set [P16] = @MVAR1,[P17] = @MVARL, [P18] = @MVARTL,[P19] = @MVARH,[P20] = @MVARTH, [P21] = @MVART1 WHERE ID= 1
 
 
@@ -438,12 +442,14 @@ WHILE 1=1 BEGIN
 -----------3.3 Updating Upto Previous Block Data
 
         update [EMS_Network].[dbo].[WebData]
-	set	[1] = @TotalAg,  [2] = @aMW, [3] = @aMW, [4] = @DC, [5] = @SG, [6] = @xBD, [7] = @AgSGPer , [8] = @ahz, [9] = @aMW, [10] = @DSMW,	
-                [11]= round(@DSRs,0), [12]= @AddDS, [13]= @DSGr, [14]= @DSFC, [15]= @DSNt
+	set	[P1] = @TotalAg,  [P2] = @aMW, [P3] = @aMW, [P4] = @DC, [P5] = @SG, [P6] = @xBD, [P7] = @AgSGPer , [P8] = @ahz, [P9] = @aMW, [P10] = @DSMW,	
+                [P11]= round(@DSRs,0), [P12]= @AddDS, [P13]= @DSGr, [P14]= @DSFC, [P15]= @DSNt
 	WHERE ID= 4
 
         Select @MVAR1=AvgKVAR,@MVARH=KVARh_H,@MVARL=KVARh_L from [EMS_Network].[dbo].[UPLBKVARVolt1]
-        set @MVARTH=@MVARH*1.05,@MVARTL=@MVARL*1.05,@MVART1=(@MVARH+@MVARL)*1.05
+        set @MVARTH=@MVARH*1.05
+set @MVARTL=@MVARL*1.05
+set @MVART1=(@MVARH+@MVARL)*1.05
  	update [EMS_Network].[dbo].[WebData] set [P16] = @MVAR1,[P17] = @MVARL, [P18] = @MVARTL,[P19] = @MVARH,[P20] = @MVARTH, [P21] = @MVART1 WHERE ID= 4
 
 
@@ -455,42 +461,42 @@ WHILE 1=1 BEGIN
         SELECT @TB= BlockNo, @aMW=isnull(AvgMW,0),@ahz=isnull(AvgHz,0), @SG=isnull(SG,0),  @DSMW=isnull(UIMW,0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid= @CBTId-900
         
-        update [EMS_Network].[dbo].[WebData] set [P1] = @TB, [P7] = @ahz, [14] = @SG, 	[21] = @aMW, [P28] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P1] = @TB, [P7] = @ahz, [P14] = @SG, 	[P21] = @aMW, [P28] = @DSMW WHERE ID= 3
 
         SELECT @TB= BlockNo, @aMW=isnull(AvgMW,0),@ahz=isnull(AvgHz,0), @SG=isnull(SG,0),  @DSMW=isnull(UIMW,0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid= @CBTId-(900*2)
  
-        update [EMS_Network].[dbo].[WebData] set [P2] = @TB, [P8] = @ahz, [15] = @SG, 	[22] = @aMW, [P29] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P2] = @TB, [P8] = @ahz, [P15] = @SG, 	[P22] = @aMW, [P29] = @DSMW WHERE ID= 3
 
          SELECT @TB= BlockNo, @aMW=isnull(AvgMW,0),@ahz=isnull(AvgHz,0), @SG=isnull(SG,0),  @DSMW=isnull(UIMW,0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid= @CBTId-(900*3)
  
-        update [EMS_Network].[dbo].[WebData] set [P3] = @TB, [P9] = @ahz, [16] = @SG, 	[23] = @aMW, [P30] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P3] = @TB, [P9] = @ahz, [P16] = @SG, 	[P23] = @aMW, [P30] = @DSMW WHERE ID= 3
        
          SELECT @TB= BlockNo, @aMW=isnull(AvgMW,0),@ahz=isnull(AvgHz,0), @SG=isnull(SG,0),  @DSMW=isnull(UIMW,0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid= @CBTId-(900*4)
  
-        update [EMS_Network].[dbo].[WebData] set [P4] = @TB, [P10] = @ahz, [17] = @SG, 	[24] = @aMW, [P31] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P4] = @TB, [P10] = @ahz, [P17] = @SG, 	[P24] = @aMW, [P31] = @DSMW WHERE ID= 3
 
          SELECT @TB= BlockNo, @aMW=isnull(AvgMW,0),@ahz=isnull(AvgHz,0), @SG=isnull(SG,0),  @DSMW=isnull(UIMW,0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid= @CBTId-(900*5)
  
-        update [EMS_Network].[dbo].[WebData] set [P5] = @TB, [P11] = @ahz, [18] = @SG, 	[25] = @aMW, [P32] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P5] = @TB, [P11] = @ahz, [P18] = @SG, 	[P25] = @aMW, [P32] = @DSMW WHERE ID= 3
 
          SELECT @TB= BlockNo, @aMW=isnull(AvgMW,0),@ahz=isnull(AvgHz,0), @SG=isnull(SG,0),  @DSMW= isnull(UIMW,0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid= @CBTId-(900*6)
  
-        update [EMS_Network].[dbo].[WebData] set [P6] = @TB, [P12] = @ahz, [19] = @SG, 	[26] = @aMW, [P33] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P6] = @TB, [P12] = @ahz, [P19] = @SG, 	[P26] = @aMW, [P33] = @DSMW WHERE ID= 3
 
         SELECT @ahz=isnull(Avg(AvgHz),0), @aMW=isnull(Avg(AvgMW),0), @SG=isnull(Avg(SG),0), @DSMW=isnull(AVG(UIMW),0)FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid between @CBTId-900and @CBTId-5400
                 
-        update [EMS_Network].[dbo].[WebData] set [P13] = @ahz, [20] = @SG, [27] = @aMW, [P34] = @DSMW WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set [P13] = @ahz, [P20] = @SG, [P27] = @aMW, [P34] = @DSMW WHERE ID= 3
 
         SELECT @ahz=isnull(Avg(AvgHz),0), @FC=isnull(Avg(FC),0), @SG=isnull(Avg(ACP),0) FROM [EMS_Data].[dbo].[ABT1] 
         where Timestampid between @MNTId+900and @CBTId-900
                 
-        update [EMS_Network].[dbo].[WebData] set  [35] = @FC, [36] = @SG WHERE ID= 3
+        update [EMS_Network].[dbo].[WebData] set  [P35] = @FC, [P36] = @SG WHERE ID= 3
         
 --------4.1  Next 4 blocks DC SG Updation
 
@@ -527,26 +533,19 @@ WHILE 1=1 BEGIN
 	set @BlockRange = CONVERT(VARCHAR(5), @BlockStart, 108) + ' - ' + CONVERT(VARCHAR(5), @BlockEnd, 108)
         SET @TB = (@NBTId % 86400) / 900 + 1
         IF @TB = 0  SET @TB = 96;
-
-        update [EMS_Network].[dbo].[WebData] set [P45] = @TB, [P46] = @BlockRange, [P47] = @DC,[P48] = @SG WHERE ID= 3
-
- 	select @NBTId=TimeStampId, @DC = DC, @SG = SG from [EMS_Data].[dbo].[Stg1DCSG] where Timestampid = @CBTId+3600
-       
-        set @ActualTime  = DATEADD(SECOND, @CBTId, '1970-01-01')
+        update [EMS_Network].[dbo].[WebData] set [P45] = @TB, [P46] = @BlockRange, [P47] = @DC,[P48] = @SG WHERE ID= 3;
+ 	select @NBTId=TimeStampId, @DC = DC, @SG = SG from [EMS_Data].[dbo].[Stg1DCSG] where Timestampid = (@CBTId+3600);
+    
+        set @ActualTime  = DATEADD(SECOND, @CBTId, '1970-01-01');
         set @BlockStart  = DATEADD(MINUTE, DATEDIFF(MINUTE, 0, @ActualTime) / 15 * 15, 0)
 	set @BlockEnd  = DATEADD(MINUTE, 15, @BlockStart)
---------set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+
 	set @BlockRange = CONVERT(VARCHAR(5), @BlockStart, 108) + ' - ' + CONVERT(VARCHAR(5), @BlockEnd, 108)
         
         SET @TB = (@NBTId % 86400) / 900 + 1
         IF @TB = 0  SET @TB = 96;
-
-        update [EMS_Network].[dbo].[WebData] set [P49] = @TB, [P50] = @BlockRange, [P51] = @DC,[P52] = @SG WHERE ID= 3
-
-end
-			
-						
+        update [EMS_Network].[dbo].[WebData] set [P49] = @TB, [P50] = @BlockRange, [P51] = @DC,[P52] = @SG WHERE ID= 3;
+end						
 WAITFOR DELAY '00:00:03'
-
 END
 END
