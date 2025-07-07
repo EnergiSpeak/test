@@ -499,7 +499,8 @@ WHILE 1=1 BEGIN
         set @ActualTime  = DATEADD(SECOND, @CBTId, '1970-01-01')
         set @BlockStart  = DATEADD(MINUTE, DATEDIFF(MINUTE, 0, @ActualTime) / 15 * 15, 0)
 	set @BlockEnd  = DATEADD(MINUTE, 15, @BlockStart)
- 	set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+--------set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+	set @BlockRange = CONVERT(VARCHAR(5), @BlockStart, 108) + ' - ' + CONVERT(VARCHAR(5), @BlockEnd, 108)
         SET @TB = (@NBTId % 86400) / 900 + 1
         IF @TB = 0  SET @TB = 96
 
@@ -521,7 +522,8 @@ WHILE 1=1 BEGIN
         set @ActualTime  = DATEADD(SECOND, @CBTId, '1970-01-01')
         set @BlockStart  = DATEADD(MINUTE, DATEDIFF(MINUTE, 0, @ActualTime) / 15 * 15, 0)
 	set @BlockEnd  = DATEADD(MINUTE, 15, @BlockStart)
- 	set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+--------set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+	set @BlockRange = CONVERT(VARCHAR(5), @BlockStart, 108) + ' - ' + CONVERT(VARCHAR(5), @BlockEnd, 108)
         SET @TB = (@NBTId % 86400) / 900 + 1
         IF @TB = 0  SET @TB = 96;
 
@@ -532,7 +534,9 @@ WHILE 1=1 BEGIN
         set @ActualTime  = DATEADD(SECOND, @CBTId, '1970-01-01')
         set @BlockStart  = DATEADD(MINUTE, DATEDIFF(MINUTE, 0, @ActualTime) / 15 * 15, 0)
 	set @BlockEnd  = DATEADD(MINUTE, 15, @BlockStart)
- 	set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+--------set @BlockRange = FORMAT(@BlockStart, 'HH:mm') + ' - ' + FORMAT(@BlockEnd, 'HH:mm')
+	set @BlockRange = CONVERT(VARCHAR(5), @BlockStart, 108) + ' - ' + CONVERT(VARCHAR(5), @BlockEnd, 108)
+        
         SET @TB = (@NBTId % 86400) / 900 + 1
         IF @TB = 0  SET @TB = 96;
 
